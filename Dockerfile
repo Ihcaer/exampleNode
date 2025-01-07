@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+CMD ["sh", "-c", "if [ \"$RUN_TESTS\" = \"true\" ]; then npm test; else npm start; fi"]

@@ -5,14 +5,11 @@ Example node app with ES modules and Docker.
 ## Starting
 
 ```bash
-docker-compose up --build
+docker-compose up --build -d app
 ```
 
 ## Testing
 
-> Node version: 20.14
-
 ```bash
-npm install
-npm test
+docker-compose up --build tests
 ```

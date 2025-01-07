@@ -1,10 +1,13 @@
 import express from 'express';
+import compression from 'compression';
 import errorHandler from './middlewares/errorHandler.js';
 import Database from './utils/dbUtils.js';
 import blogRoutes from './routes/blogRoutes.js';
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(compression());
 
 app.use('/blog', blogRoutes);
 

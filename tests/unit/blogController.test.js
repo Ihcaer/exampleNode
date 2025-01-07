@@ -5,7 +5,7 @@ import sinonChai from 'sinon-chai';
 
 chai.use(sinonChai);
 
-import { getPostBySlug } from '../../src/controllers/blogController.js';
+import BlogController from '../../src/controllers/blogController.js';
 import models from '../../src/models/models.js';
 import { basename } from 'path';
 import { fileURLToPath } from 'url';
@@ -16,6 +16,7 @@ const FileName = basename(filePath);
 describe(`${FileName} - getPostBySlug()`, () => {
   let req, res, next;
   let findOneStub;
+  let blogController;
 
   beforeEach(() => {
     req = { params: { slug: 'test-post' } };
@@ -27,6 +28,7 @@ describe(`${FileName} - getPostBySlug()`, () => {
     next = Sinon.stub();
 
     findOneStub = Sinon.stub(models.Post, 'findOne');
+    blogController = new BlogController();
   });
 
   afterEach(() => {
@@ -47,7 +49,7 @@ describe(`${FileName} - getPostBySlug()`, () => {
 
     findOneStub.resolves(mockPost);
 
-    await getPostBySlug(req, res, next);
+    await blogController.getPostBySlug(req, res, next);
 
     expect(findOneStub).to.have.been.calledOnceWith({ where: { slug: 'test-post' } });
     expect(res.set).to.have.been.calledOnceWith(
@@ -61,7 +63,7 @@ describe(`${FileName} - getPostBySlug()`, () => {
   it('should return 404 if the post doesnt exists', async () => {
     findOneStub.resolves(null);
 
-    await getPostBySlug(req, res, next);
+    await blogController.getPostBySlug(req, res, next);
 
     expect(findOneStub).to.have.been.calledOnceWith({ where: { slug: 'test-post' } });
     expect(res.status).to.have.been.calledWith(404);
@@ -72,7 +74,7 @@ describe(`${FileName} - getPostBySlug()`, () => {
     const error = new Error('Database error');
     findOneStub.rejects(error);
 
-    await getPostBySlug(req, res, next);
+    await blogController.getPostBySlug(req, res, next);
 
     expect(findOneStub).to.have.been.calledOnceWith({ where: { slug: 'test-post' } });
     expect(next).to.have.been.calledOnceWith(error);

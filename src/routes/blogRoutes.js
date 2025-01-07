@@ -1,8 +1,9 @@
 import express from 'express';
-import { getPostBySlug } from '../controllers/blogController.js';
+import BlogController from '../controllers/blogController.js';
 
 const router = express.Router();
+const blogController = new BlogController();
 
-router.get('/get-post/:slug', getPostBySlug);
+router.get('/get-post/:slug', blogController.getPostBySlug.bind(blogController));
 
 export default router;

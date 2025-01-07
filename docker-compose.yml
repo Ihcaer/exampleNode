@@ -27,8 +27,7 @@ services:
 
   tests:
     build: .
-    environment:
-      RUN_TESTS: "true"
+    command: ["npm", "test"]
 
 volumes:
   postgres-data:
